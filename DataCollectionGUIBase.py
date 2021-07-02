@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from moviepy.editor import *
-import cv2
+# import cv2
 import numpy as np
 # from picamera.array import PiRGBArray
 # import picamera
@@ -27,6 +27,31 @@ duration_var = IntVar()
 def confirm_duration():
     duration = duration_var.get()
     label_confirm_duration.configure(text = "Confirmed duration: " + str(duration) + " seconds")
+
+def pi_button():
+    if pi_number.get() == "Off":
+        pi_entry.delete(0, 'end')
+        pi_entry.insert(0, 'Pi Number')
+
+experimental = Label(root, text = 'Experimental')
+experimental.pack(side=TOP, anchor=NW)
+
+pi_number = StringVar()
+pi_entry = Entry(root, width = 20)
+pi_entry.insert(0, 'Pi Number')
+pi_chk = Checkbutton(root, text = "Pi Number", width = 15, variable = pi_number, onvalue="On", offvalue="Off", command=pi_button)
+pi_chk.deselect()
+pi_chk.pack(padx = 5, pady = 5, side=TOP, anchor=NW)
+pi_entry.pack(padx = 5, pady = 5, side=TOP, anchor=NW)
+
+rec_var = StringVar()
+rec_chk = Checkbutton(root, text='Recording Type', width = 15, variable = rec_var, onvalue="On", offvalue="Off")
+rec_chk.deselect()
+rec_chk.pack(padx=5, pady=5, side=TOP, anchor=NW)
+rec = StringVar()
+rec.set("Select Recording Type")
+rec_type = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test","Select Recording Type")
+rec_type.pack(side=TOP, anchor=NW)
 
 
 
