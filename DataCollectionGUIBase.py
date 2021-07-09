@@ -1,6 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
-from moviepy.editor import *
+#from moviepy.editor import *
 # import cv2
 import numpy as np
 # from picamera.array import PiRGBArray
@@ -33,7 +33,7 @@ def pi_button():
         pi_entry.delete(0, 'end')
         pi_entry.insert(0, 'Pi Number')
 
-experimental = Label(root, text = 'Experimental')
+experimental = Label(root, text = 'Experimental', font = ('calibre', 12, 'bold'))
 experimental.pack(side=TOP, anchor=NW)
 
 pi_number = StringVar()
@@ -55,7 +55,7 @@ rec_type.pack(side=TOP, anchor=NW)
 
 
 
-label_file_explorer = Label(root, text = "Select the Directory to save your file:", font = ('calibre',12,'normal'), width = 100, height = 4)
+label_file_explorer = Label(root, text = "Select the Directory to save your file:", font = ('calibre',12,'bold'), width = 100, height = 4)
 button_file_explorer = Button(root, text = "Select Directory", font = ('calibre',12,'normal'), command = command_directoryExplorer)
 
 label_filename = Label(root, text = "Enter file name:", font = ('calibre',12,'bold'))
@@ -98,17 +98,17 @@ label_confirm_duration = Label(root, text = "", font = ('calibre',12,'normal'))
 
 
 #Root Window Properties
-label_file_explorer.place(x=-250, y = 400)
-button_file_explorer.place(x = 100, y= 450)
-label_filename.place(x=20, y=200)
-entry_filename.place(x=150, y=200)
-button_confirm_filename.place(x=125, y=225)
-label_confirm_filename.place(x=75,y=255)
+label_file_explorer.place(x=-325, y = 350)
+button_file_explorer.place(x = 100, y= 400)
+label_filename.place(x=12, y=250)
+entry_filename.place(x=125, y=250)
+button_confirm_filename.place(x=125, y=275)
+label_confirm_filename.place(x=75,y=295)
 
-label_duration.place(x=20, y=600)
-entry_duration.place(x=280, y=600)
-button_confirm_duration.place(x=125, y=625)
-label_confirm_duration.place(x=75,y=655)
+label_duration.place(x=12, y=500)
+entry_duration.place(x=225, y=500)
+button_confirm_duration.place(x=125, y=525)
+label_confirm_duration.place(x=75,y=555)
 
 
 #button_open_preview.grid(column =1, row =3)
