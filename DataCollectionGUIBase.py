@@ -1,10 +1,9 @@
 from tkinter import *
 from tkinter import filedialog
-from moviepy.editor import *
+import RPi.GPIO as GPIO
 import cv2
 import numpy as np
-# from picamera.array import PiRGBArray
-# import picamera
+import picamera
 import time
 
 root = Tk() #name of our tkinter window
@@ -43,8 +42,24 @@ entry_duration = Entry(root, textvariable= duration_var, font = ('calibre',12,'n
 button_confirm_duration = Button(root, text = "Confirm", font = ('calibre',12,'normal'), command = confirm_duration)
 label_confirm_duration = Label(root, text = "", font = ('calibre',12,'normal'))
 
+label_resolution = Label(root, text = "What resolution would you like to set the video to:", font = ('calibre',12,'bold'))
+# optionMenu_resolution = OptionMenu(root)
 
 #picamera initialization
+camera = picamera.PiCamera()
+
+def CameraON():
+    camera.preview_fullscreen = False
+    camera.preview_window = (90, 100, 320, 240)
+    camera.resolution = (640, 480)
+    camera.start_preview()
+
+def CameraOFF():
+    camera.stop_preview()
+
+
+
+
 # camera = picamera.PiCamera()
 # camera.resolution = (1920, 1080)  # will be adjusted to user preferences
 # camera.framerate = 30  # will be adjusted to user preferences
@@ -57,7 +72,6 @@ label_confirm_duration = Label(root, text = "", font = ('calibre',12,'normal'))
 #     for frame in camera.capture_continuous(rawCapture, format='bgr', use_video_port=True):
 #         # image= frame.array  #grabbing frame
 #         cv2.imshow("Preview Camera 1", image) #display image
-#         key= cv2.waitKey(1) & 0xFF
 #         rawCapture.truncate(0)
         
 #         if key == ord('q'): #quit
@@ -65,12 +79,7 @@ label_confirm_duration = Label(root, text = "", font = ('calibre',12,'normal'))
 #             camera.close()
 #             break
 
-    
-
-    
 #button_open_preview = Button(root, text = "Open Preview", command= picameraPreview)
-
-
 
 #Root Window Properties
 label_file_explorer.place(x=-250, y = 400)
@@ -89,5 +98,6 @@ label_confirm_duration.place(x=75,y=655)
 #button_open_preview.grid(column =1, row =3)
 root.title("Data Collection PiCamera GUI")
 root.geometry("1200x850")
+root.resizable(width = False, height = False)
 
 root.mainloop()
