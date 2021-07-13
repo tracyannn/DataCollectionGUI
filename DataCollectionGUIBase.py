@@ -68,6 +68,40 @@ entry_duration = Entry(root, textvariable= duration_var, font = ('calibre',12,'n
 button_confirm_duration = Button(root, text = "Confirm", font = ('calibre',12,'normal'), command = confirm_duration)
 label_confirm_duration = Label(root, text = "", font = ('calibre',12,'normal'))
 
+#Resolution Widget
+res_var = StringVar()
+def confirm_resolution():
+    label_confirm_res = Label(root, text = "Confirmed Resolution: " + res_var.get()).place(x=450, y=555)
+
+res_label = Label(root, text = 'Select Camera Resolution: ', font = ('calibre',12,'bold'))
+res_label.pack()
+res_options = ["(1920, 1080)", "(1280, 960) ", "(1280, 720) ", "(3840, 2160)"]
+res_var.set(res_options[0])
+res_drop = OptionMenu(root, res_var, *res_options)
+res_drop.pack()
+
+button_confirm_resolution = Button(root, text = "Confirm", font = ('calibre',12,'normal'), command = confirm_resolution)
+button_confirm_resolution.pack()
+label_confirm_resolution = Label(root, text = "", font = ('calibre',12,'normal'))
+label_confirm_resolution.pack()
+
+#Frame Rate Widget
+frame_var = StringVar()
+def confirm_framerate():
+    label_confirm_framerate = Label(root, text = "Confirmed Frame Rate: " + frame_var.get() + " fps").place(x=700, y=555)
+
+frame_label = Label(root, text = 'Select Camera Frame Rate: ', font = ('calibre',12,'bold'))
+frame_label.pack()
+frame_options = ["24", "25", "30", "60", "120"]
+frame_var.set(frame_options[2])
+frame_drop = OptionMenu(root, frame_var, *frame_options)
+frame_drop.pack()
+
+button_confirm_framerate = Button(root, text = "Confirm", font = ('calibre',12,'normal'), command = confirm_framerate)
+button_confirm_framerate.pack()
+label_confirm_framerate = Label(root, text = "", font = ('calibre',12,'normal'))
+label_confirm_framerate.pack()
+
 
 #picamera initialization
 # camera = picamera.PiCamera()
@@ -110,6 +144,13 @@ entry_duration.place(x=225, y=500)
 button_confirm_duration.place(x=125, y=525)
 label_confirm_duration.place(x=75,y=555)
 
+res_label.place(x= 450, y= 500)
+res_drop.place(x=450, y= 525)
+button_confirm_resolution.place(x=560, y=525)
+
+frame_label.place(x= 700, y= 500)
+frame_drop.place(x=700, y= 525)
+button_confirm_framerate.place(x=750, y=525)
 
 #button_open_preview.grid(column =1, row =3)
 root.title("Data Collection PiCamera GUI")
