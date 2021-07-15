@@ -1,9 +1,10 @@
 from tkinter import *
 from tkinter import filedialog
-import RPi.GPIO as GPIO
-import cv2
+#from moviepy.editor import *
+# import cv2
 import numpy as np
-import picamera
+# from picamera.array import PiRGBArray
+# import picamera
 import time
 
 root = Tk() #name of our tkinter window
@@ -27,9 +28,34 @@ def confirm_duration():
     duration = duration_var.get()
     label_confirm_duration.configure(text = "Confirmed duration: " + str(duration) + " seconds")
 
+def pi_button():
+    if pi_number.get() == "Off":
+        pi_entry.delete(0, 'end')
+        pi_entry.insert(0, 'Pi Number')
+
+experimental = Label(root, text = 'Experimental', font = ('calibre', 12, 'bold'))
+experimental.pack(side=TOP, anchor=NW)
+
+pi_number = StringVar()
+pi_entry = Entry(root, width = 20)
+pi_entry.insert(0, 'Pi Number')
+pi_chk = Checkbutton(root, text = "Pi Number", width = 15, variable = pi_number, onvalue="On", offvalue="Off", command=pi_button)
+pi_chk.deselect()
+pi_chk.pack(padx = 5, pady = 5, side=TOP, anchor=NW)
+pi_entry.pack(padx = 5, pady = 5, side=TOP, anchor=NW)
+
+rec_var = StringVar()
+rec_chk = Checkbutton(root, text='Recording Type', width = 15, variable = rec_var, onvalue="On", offvalue="Off")
+rec_chk.deselect()
+rec_chk.pack(padx=5, pady=5, side=TOP, anchor=NW)
+rec = StringVar()
+rec.set("Select Recording Type")
+rec_type = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test","Select Recording Type")
+rec_type.pack(side=TOP, anchor=NW)
 
 
-label_file_explorer = Label(root, text = "Select the Directory to save your file:", font = ('calibre',12,'normal'), width = 100, height = 4)
+
+label_file_explorer = Label(root, text = "Select the Directory to save your file:", font = ('calibre',12,'bold'), width = 100, height = 4)
 button_file_explorer = Button(root, text = "Select Directory", font = ('calibre',12,'normal'), command = command_directoryExplorer)
 
 label_filename = Label(root, text = "Enter file name:", font = ('calibre',12,'bold'))
@@ -42,24 +68,8 @@ entry_duration = Entry(root, textvariable= duration_var, font = ('calibre',12,'n
 button_confirm_duration = Button(root, text = "Confirm", font = ('calibre',12,'normal'), command = confirm_duration)
 label_confirm_duration = Label(root, text = "", font = ('calibre',12,'normal'))
 
-label_resolution = Label(root, text = "What resolution would you like to set the video to:", font = ('calibre',12,'bold'))
-# optionMenu_resolution = OptionMenu(root)
 
 #picamera initialization
-camera = picamera.PiCamera()
-
-def CameraON():
-    camera.preview_fullscreen = False
-    camera.preview_window = (90, 100, 320, 240)
-    camera.resolution = (640, 480)
-    camera.start_preview()
-
-def CameraOFF():
-    camera.stop_preview()
-
-
-
-
 # camera = picamera.PiCamera()
 # camera.resolution = (1920, 1080)  # will be adjusted to user preferences
 # camera.framerate = 30  # will be adjusted to user preferences
@@ -72,6 +82,7 @@ def CameraOFF():
 #     for frame in camera.capture_continuous(rawCapture, format='bgr', use_video_port=True):
 #         # image= frame.array  #grabbing frame
 #         cv2.imshow("Preview Camera 1", image) #display image
+#         key= cv2.waitKey(1) & 0xFF
 #         rawCapture.truncate(0)
         
 #         if key == ord('q'): #quit
@@ -79,25 +90,29 @@ def CameraOFF():
 #             camera.close()
 #             break
 
+    
+
+    
 #button_open_preview = Button(root, text = "Open Preview", command= picameraPreview)
 
-#Root Window Properties
-label_file_explorer.place(x=-250, y = 400)
-button_file_explorer.place(x = 100, y= 450)
-label_filename.place(x=20, y=200)
-entry_filename.place(x=150, y=200)
-button_confirm_filename.place(x=125, y=225)
-label_confirm_filename.place(x=75,y=255)
 
-label_duration.place(x=20, y=600)
-entry_duration.place(x=280, y=600)
-button_confirm_duration.place(x=125, y=625)
-label_confirm_duration.place(x=75,y=655)
+
+#Root Window Properties
+label_file_explorer.place(x=-325, y = 350)
+button_file_explorer.place(x = 100, y= 400)
+label_filename.place(x=12, y=250)
+entry_filename.place(x=125, y=250)
+button_confirm_filename.place(x=125, y=275)
+label_confirm_filename.place(x=75,y=295)
+
+label_duration.place(x=12, y=500)
+entry_duration.place(x=225, y=500)
+button_confirm_duration.place(x=125, y=525)
+label_confirm_duration.place(x=75,y=555)
 
 
 #button_open_preview.grid(column =1, row =3)
 root.title("Data Collection PiCamera GUI")
 root.geometry("1200x850")
-root.resizable(width = False, height = False)
 
 root.mainloop()
