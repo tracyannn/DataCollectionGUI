@@ -10,6 +10,7 @@ root = Tk() #name of our tkinter window
 filedirectory = ""
 font_bold = ('calibre',12,'bold')
 font_normal = ('calibre',12,'normal')
+# camera = picamera.PiCamera()
 
 def command_directoryExplorer():
     filedir = filedialog.askdirectory(initialdir = "/",
@@ -64,10 +65,14 @@ dropdown_recType.place(x=20, y=180)
 res_var = StringVar()
 def confirm_resolution():
     label_confirmed_res = Label(root, text = "Confirmed Resolution: " + res_var.get()).place(x=500, y=655)
+    strRes = res_var.get()
+    res1 = int(strRes[1:strRes.find(',')])
+    res2 = int(strRes[strRes.find(',')+2:len(strRes)-1])
+    camera.resolution = (res1,res2)
 
 label_resolution = Label(root, text = 'Select Camera Resolution: ', font = font_bold)
 label_resolution.pack()
-res_options = ["(1920, 1080)", "(1280, 960) ", "(1280, 720) ", "(3840, 2160)"]
+res_options = ["(1920, 1080)", "(1280, 960)", "(1280, 720)", "(3840, 2160)"]
 res_var.set(res_options[0])
 dropdown_resolution = OptionMenu(root, res_var, *res_options)
 dropdown_resolution.pack()
@@ -79,17 +84,18 @@ label_confirm_resolution = Label(root, text = "", font = font_normal)
 frame_var = StringVar()
 def confirm_framerate():
     label_confirmed_framerate = Label(root, text = "Confirmed Frame Rate: " + frame_var.get() + " fps").place(x=775, y=655)
+    camera.framerate = int(frame_var.get())
 
-label_framerate = Label(root, text = 'Select Camera Frame Rate: ', font = ('calibre',12,'bold'))
+label_framerate = Label(root, text = 'Select Camera Frame Rate: ', font = font_bold)
 label_framerate.pack()
 framerate_options = ["24", "25", "30", "60", "120"]
 frame_var.set(framerate_options[2])
 dropdown_framerate = OptionMenu(root, frame_var, *framerate_options)
 dropdown_framerate.pack()
 
-button_confirm_framerate = Button(root, text = "Confirm", font = ('calibre',12,'normal'), command = confirm_framerate)
+button_confirm_framerate = Button(root, text = "Confirm", font = font_normal, command = confirm_framerate)
 button_confirm_framerate.pack()
-label_confirm_framerate = Label(root, text = "", font = ('calibre',12,'normal'))
+label_confirm_framerate = Label(root, text = "", font = font_normal)
 label_confirm_framerate.pack()
 
 # directory selector widget
@@ -109,7 +115,7 @@ button_confirm_duration = Button(root, text = "Confirm", font = font_normal, com
 label_confirm_duration = Label(root, text = "", font = font_normal)
 
 # picamera initialization
-# camera = picamera.PiCamera()
+
 # def CameraON():
 #     camera.preview_fullscreen = False
 #     camera.preview_window = (90, 100, 320, 240)
@@ -119,7 +125,17 @@ label_confirm_duration = Label(root, text = "", font = font_normal)
 # def CameraOFF():
 #     camera.stop_preview()
 
-#button_open_preview = Button(root, text = "Open Preview", command= picameraPreview)
+
+frame_video_preview = Frame(root, width = 730, height = 525, bg = "white")
+frame_video_preview.place(x = 400, y = 25)
+
+button_open_preview = Button(root, text = "Open Preview", font = font_normal)
+button_open_preview.place(x=450,y=50)
+
+button_close_preview = Button(root, text = "Close Preview", font = font_normal)
+button_close_preview.place(x=450, y = 100)
+
+
 
 # Place Widgets
 label_file_explorer.place(x=-250, y = 400)
