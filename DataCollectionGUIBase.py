@@ -33,6 +33,31 @@ def pi_button():
         pi_entry.delete(0, 'end')
         pi_entry.insert(0, 'Pi Number')
 
+def rectype(self):
+    choice = rec.get()
+    print(choice)
+    if choice == "Post-Operation":
+        types = StringVar()
+        types.set("Select PO Type")
+        postop = OptionMenu(root, types, "Sham","Laparotomy")
+        postop.pack(side=TOP, anchor=NW)
+        surgeon = Label(root, text="Surgeon Initial or Name:")
+        surgeon.pack(side=TOP, anchor=NW)
+        surgeon_entry = Entry(root, width = 20)
+        surgeon_entry.pack(side=TOP, anchor=NW)
+        surgery_start = Label(root, text="Enter Surgery Start Time (HH:MM):").pack(side=TOP, anchor=NW)
+        surgery_end = Label(root, text = "Enter Surgery End Time (HH:MM):").pack(side=TOP, anchor=NW)
+    elif choice == "Test":
+        test_name = Label(root, text="Test file name:")
+        test_name.pack(side=TOP, anchor=NW)
+        test_entry = Entry(root, width = 20)
+        test_entry.pack(side=TOP, anchor=NW)
+    
+    
+   
+
+        
+
 experimental = Label(root, text = 'Experimental', font = ('calibre', 12, 'bold'))
 experimental.pack(side=TOP, anchor=NW)
 
@@ -50,8 +75,12 @@ rec_chk.deselect()
 rec_chk.pack(padx=5, pady=5, side=TOP, anchor=NW)
 rec = StringVar()
 rec.set("Select Recording Type")
-rec_type = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test","Select Recording Type")
+rec_type = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test", command=rectype)
 rec_type.pack(side=TOP, anchor=NW)
+
+
+
+
 
 
 

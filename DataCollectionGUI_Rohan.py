@@ -43,7 +43,7 @@ def pi_button():
         entry_pinum.insert(0, '')
 
 
-label_experimental = Label(root, text = 'Experimental')
+# label_experimental = Label(root, text = 'Experimental')
 # experimental.pack(side=TOP, anchor=NW)
 
 
@@ -53,30 +53,131 @@ raspinum = IntVar()
 entry_pinum = Entry(root, width = 20, font = font_normal, textvariable = raspinum, state='disabled')
 checkbox_pinum = Checkbutton(root, text = "Pi Number", width = 15, font = font_bold, variable = pinumvar, onvalue="On", offvalue="Off", command=pi_button)
 checkbox_pinum.deselect()
-entry_pinum.place(x=20,y=100)
-checkbox_pinum.place(x=0,y=50)
+entry_pinum.place(x=20,y=85)
+checkbox_pinum.place(x=20,y=50)
 
 label_confirmed_pinum = Label(root, text = "")
-label_confirmed_pinum.place(x=20, y=130)
+label_confirmed_pinum.place(x=20, y=110)
 def confirm_pinum():
     if(pinumvar.get() == "On"):
         label_confirmed_pinum.configure(text = "Confirmed Pi Number: " + str(raspinum.get()))
 
 
 button_confirm_pinum = Button(root, text = "Confirm", font = font_normal, command = confirm_pinum)
-button_confirm_pinum.place(x=140, y =90)
+button_confirm_pinum.place(x=190, y =85)
 
+'''Recording Type'''
+rectype_list = []
+dynamic_widgets = []
+        
+def rec_chk():
+    if rec_var.get() == "Off":
+        for i in dynamic_widgets:
+            i.destroy()        
+
+def rectype(self):
+    choice = rec.get()
+    # print(choice)
+    if choice == "Post-Operation":
+        for i in dynamic_widgets:
+            i.destroy()
+        # polabel = Label(root, text="PO Type:")
+        # dynamic_widgets.append(polabel)
+        # polabel.place(x=100, y=180)
+        types = StringVar()
+        types.set("Select PO Type")
+        postop = OptionMenu(root, types, "Sham","Laparotomy")
+        dynamic_widgets.append(postop)
+        postop.place(x=160, y=180)
+        POtype = types.get()
+        if POtype == "Sham":
+            recordingtype = 'SHAM'
+        elif POtype == "Laparotomy":
+            recordingtype = 'LAPA'
+        animalid = Label(root, text="Animal ID:")
+        dynamic_widgets.append(animalid)
+        animalid.place(x=20, y=235)
+        animalid_entry = Entry(root, width=10)
+        dynamic_widgets.append(animalid_entry)
+        animalid_entry.place(x=85, y=235)
+        strain = Label(root, text="Strain:")
+        dynamic_widgets.append(strain)
+        strain.place(x=20, y=260)
+        strain_entry = Entry(root, width=10)
+        dynamic_widgets.append(strain_entry)
+        strain_entry.place(x=65, y=260)
+        surgeon = Label(root, text="Surgeon:")
+        dynamic_widgets.append(surgeon)
+        surgeon.place(x=20, y=210)
+        surgeon_entry = Entry(root, width = 10)
+        dynamic_widgets.append(surgeon_entry)
+        surgeon_entry.place(x=85, y=210)
+        surgery_start = Label(root, text="Start Time (HH:MM):")
+        dynamic_widgets.append(surgery_start)
+        surgery_start.place(x=190, y=210)
+        start_entry = Entry(root, width=10)
+        dynamic_widgets.append(start_entry)
+        start_entry.place(x=320, y=210)
+        surgery_end = Label(root, text = "End Time (HH:MM):")
+        dynamic_widgets.append(surgery_end)
+        surgery_end.place(x=190, y=235)
+        end_entry = Entry(root, width=10)
+        dynamic_widgets.append(end_entry)
+        end_entry.place(x=320, y=235)
+        animal_weight = Label(root, text="Weight (g):")
+        dynamic_widgets.append(animal_weight)
+        animal_weight.place(x=165, y=260)
+        weight_entry = Entry(root, width=5)
+        dynamic_widgets.append(weight_entry)
+        weight_entry.place(x=240, y=260)
+        lorr = Label(root, text="LORR (s):")
+        dynamic_widgets.append(lorr)
+        lorr.place(x=295, y=260)
+        lorr_entry = Entry(root, width=5)
+        dynamic_widgets.append(lorr_entry)
+        lorr_entry.place(x=360, y=260)
+
+    elif choice == "Baseline":
+        for i in dynamic_widgets:
+            i.destroy()
+        recordingtype = 'BASE'
+        animalid = Label(root, text="Animal ID:")
+        dynamic_widgets.append(animalid)
+        animalid.place(x=20, y=210)
+        animalid_entry = Entry(root, width=20)
+        dynamic_widgets.append(animalid_entry)
+        animalid_entry.place(x=120, y=210)
+        strain = Label(root, text="Strain:")
+        dynamic_widgets.append(strain)
+        strain.place(x=20, y=240)
+        strain_entry = Entry(root, width=20)
+        dynamic_widgets.append(strain_entry)
+        strain_entry.place(x=120, y=240)
+    
+    elif choice == "Test":
+        for i in dynamic_widgets:
+            i.destroy()
+        replicate = Label(root, text="Rep #:")
+        dynamic_widgets.append(replicate)
+        replicate.place(x=20, y=210)
+        replicate_entry = Entry(root, width = 20)
+        dynamic_widgets.append(replicate_entry)
+        replicate_entry.place(x=120, y=210)
+        recordingtype = 'TEST'
+    else:
+        for i in dynamic_widgets:
+            i.destroy()
 
 #recording type widget
 rec_var = StringVar()
-checkbox_recType = Checkbutton(root, text='Recording Type', width = 15, font = font_bold, variable = rec_var, onvalue="On", offvalue="Off")
+checkbox_recType = Checkbutton(root, text='Recording Type', width = 15, font = font_bold, variable = rec_var, onvalue="On", offvalue="Off", command=rec_chk)
 checkbox_recType.deselect()
 # checkbox_recType.pack(padx=5, pady=5, side=TOP, anchor=NW)
 checkbox_recType.place(x=20, y=150)
 
 rec = StringVar()
 rec.set("Select Recording Type")
-dropdown_recType = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test","Select Recording Type")
+dropdown_recType = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test","Select Recording Type", command=rectype)
 dropdown_recType.place(x=20, y=180)
 # dropdown_recType.pack(side=TOP, anchor=NW)
 
