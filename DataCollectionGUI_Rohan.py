@@ -433,7 +433,7 @@ def create_csv():
         if pinumvar.get() == "On" and pi_flag == True:
              w.writerow(['PiNumber', pinumber])
 
-        #TODO: recording type variables: i used label['text'] to retrieve text from labels and .get() to retrieve text from entry boxes
+        #recording type variables: i used label['text'] to retrieve text from labels and .get() to retrieve text from entry boxes
         if rec_var.get() == "On":
             w.writerow(['Recording Type', recordingtype])
             if rec.get() == "Post-Operation":
@@ -445,7 +445,7 @@ def create_csv():
                 for i in range(len(dynamic_widgets)):
                     if i%2 == 0:
                         w.writerow([dynamic_widgets[i]['text'], dynamic_widgets[i+1].get()])
-                        
+
         if len(notesentry) > 0:
             w.writerow(['Notes', notesentry])
 
