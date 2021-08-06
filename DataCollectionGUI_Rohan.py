@@ -78,6 +78,8 @@ notes_text.place(x=300,y=85)
 '''Recording Type'''
 rectype_list = []
 dynamic_widgets = []
+types = StringVar()
+recordingtype = ''
         
 def rec_chk():
     if rec_var.get() == "Off":
@@ -93,7 +95,7 @@ def rectype(self):
         # polabel = Label(root, text="PO Type:")
         # dynamic_widgets.append(polabel)
         # polabel.place(x=100, y=180)
-        types = StringVar()
+        
         types.set("Select PO Type")
         postop = OptionMenu(root, types, "Sham","Laparotomy")
         dynamic_widgets.append(postop)
@@ -400,7 +402,8 @@ def create_csv():
     '''
     will have to check if the variables are confirmed.
     for the recording type fields, all labels and entry boxes are stored in the global list 'dynamic_widgets'.
-    possible to access label text and entry text?
+    
+    NOTE: this code is not tested I apologize in advance for any errors. I hope it's a good start
 
     '''
     fname = filename_var.get()
@@ -413,14 +416,39 @@ def create_csv():
 
 
 
-    #check if filename_var is non-empty and is confirmed
-    with open(filename_var.get() + '.csv',) as f:
+    #check if filename_var is confirmed
+    with open(fname + '.csv',) as f:
         w = csv.writer(f, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
 
-        #i created a boolean flag variable that is true when the pi button is confirmed. not sure if there is a better way to do this
+        #TODO: check to make sure these are confirmed
+        w.writerow(['filename', fname])
+        w.writerow(['Brightness', brightness])
+        w.writerow(['Sharpness', sharpness])
+        w.writerow(['Resolution', resolution])
+        w.writerow(['Framerate', framerate_var])
+
+
+        # as an example, i created a boolean flag variable that is true when the pi button is confirmed. 
+        # not sure if there is a better way to do this
         if pinumvar.get() == "On" and pi_flag == True:
-             w.writerow(['PiNumber', raspinum.get()])
-        
+             w.writerow(['PiNumber', pinumber])
+
+        #TODO: recording type variables: i used label['text'] to retrieve text from labels and .get() to retrieve text from entry boxes
+        if rec_var.get() == "On":
+            w.writerow(['Recording Type', recordingtype])
+            if rec.get() == "Post-Operation":
+                w.writerow(['Post-Operation Type', types.get()])
+                for i in range(1, len(dynamic_widgets)):
+                    if i % 2 != 0:
+                        w.writerow([dynamic_widgets[i]['text'],dynamic_widgets[i+1].get()])
+            elif rec.get() == 'Baseline' or rec.get() == 'Test':
+                for i in range(len(dynamic_widgets)):
+                    if i%2 == 0:
+                        w.writerow([dynamic_widgets[i]['text'], dynamic_widgets[i+1].get()])
+                        
+        if len(notesentry) > 0:
+            w.writerow(['Notes', notesentry])
+
 
 
     
