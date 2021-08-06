@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import filedialog
 import tkinter.ttk as ttk
 # import RPi.GPIO as GPIO
-import cv2
+#import cv2
 import numpy as np
 # import picamera
 import time
