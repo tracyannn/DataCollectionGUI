@@ -2,10 +2,12 @@ from tkinter import *
 from tkinter import filedialog
 import tkinter.ttk as ttk
 # import RPi.GPIO as GPIO
-import cv2
+# import cv2
 import numpy as np
 # import picamera
 import time
+import csv
+import tkinter.font as font
 
 root = Tk() #name of our tkinter window
 filedirectory = ""
@@ -14,6 +16,7 @@ font_normal = ('calibre',11,'normal')
 # camera = picamera.PiCamera()
 # camera.rotation = 180
 rec_duration = 0
+pi_flag=False
 
 def command_directoryExplorer():
     filedir = filedialog.askdirectory(initialdir = "/",
@@ -60,11 +63,17 @@ label_confirmed_pinum = Label(root, text = "")
 label_confirmed_pinum.place(x=20, y=110)
 def confirm_pinum():
     if(pinumvar.get() == "On"):
+        pi_flag = True
         label_confirmed_pinum.configure(text = "Confirmed Pi Number: " + str(raspinum.get()))
 
 
 button_confirm_pinum = Button(root, text = "Confirm", font = font_normal, command = confirm_pinum)
 button_confirm_pinum.place(x=190, y =85)
+
+notes_label = Label(root, text="Notes (optional):", font=font_bold)
+notes_label.place(x=300, y=50)   
+notes_text = Text(root, width=25, height=5, font=font_normal)
+notes_text.place(x=300,y=85)
 
 '''Recording Type'''
 rectype_list = []
@@ -177,7 +186,7 @@ checkbox_recType.place(x=20, y=150)
 
 rec = StringVar()
 rec.set("Select Recording Type")
-dropdown_recType = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test","Select Recording Type", command=rectype)
+dropdown_recType = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test", command=rectype)
 dropdown_recType.place(x=20, y=180)
 # dropdown_recType.pack(side=TOP, anchor=NW)
 
@@ -386,6 +395,43 @@ button_confirm_resolution.place(x=610, y=625)
 label_framerate.place(x= 775, y= 600)
 dropdown_framerate.place(x=775, y= 625)
 button_confirm_framerate.place(x=835, y=625)
+
+def create_csv():
+    '''
+    will have to check if the variables are confirmed.
+    for the recording type fields, all labels and entry boxes are stored in the global list 'dynamic_widgets'.
+    possible to access label text and entry text?
+
+    '''
+    fname = filename_var.get()
+    pinumber = pinumvar.get()
+    notesentry = notes_text.get()
+    brightness = slider_brightness.get()
+    sharpness = slider_sharpness.get()
+    resolution = res_var.get()
+    framerate_var = frame_var.get()
+
+
+
+    #check if filename_var is non-empty and is confirmed
+    with open(filename_var.get() + '.csv',) as f:
+        w = csv.writer(f, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+
+        #i created a boolean flag variable that is true when the pi button is confirmed. not sure if there is a better way to do this
+        if pinumvar.get() == "On" and pi_flag == True:
+             w.writerow(['PiNumber', raspinum.get()])
+        
+
+
+    
+csv_button_font = font.Font(family='Helvetica', size=20, weight='bold')
+csv_button = Button(root,height=4, width=13, text="Create CSV", font=csv_button_font, padx=-5, pady=-5, command=create_csv)
+csv_button.place(x=635, y=670)
+csv_label_font = font.Font(family = 'Helvetica', size=10, weight='bold')
+csv_label = Label(root, text="Make sure all necessary fields are entered before creating csv.", font=csv_label_font)
+csv_label.place(x=575, y=775)
+
+
 
 root.title("Data Collection PiCamera GUI")
 root.geometry("1000x800")
