@@ -12,6 +12,7 @@ filedirectory = ""
 font_bold = ('calibre',11,'bold')
 font_normal = ('calibre',11,'normal')
 label_font = ('calibre', 14, 'bold')
+csv_label_font = ('Helvetica', 10, 'bold')
 # camera = picamera.PiCamera()
 # camera.rotation = 180
 rec_duration = 0
@@ -391,6 +392,51 @@ def bar():
         label_progressbar_status.configure(text = str(ppct) + "% Complete")
         root.update_idletasks()
         time.sleep(1)
+
+
+#csv file
+#check if filename_var is confirmed
+def create_csv():
+    with open(fname + '.csv',) as f:
+        w = csv.writer(f, delimiter=',',quotechar='|', quoting=csv.QUOTE_MINIMAL)
+
+        #TODO: check to make sure these are confirmed
+        w.writerow(['filename', fname])
+        w.writerow(['Brightness', brightness])
+        w.writerow(['Sharpness', sharpness])
+        w.writerow(['Resolution', resolution])
+        w.writerow(['Framerate', framerate_var])
+
+
+        # as an example, i created a boolean flag variable that is true when the pi button is confirmed. 
+        # not sure if there is a better way to do this
+        if pinumvar.get() == "On" and pi_flag == True:
+             w.writerow(['PiNumber', pinumber])
+
+        #recording type variables: i used label['text'] to retrieve text from labels and .get() to retrieve text from entry boxes
+        if rec_var.get() == "On":
+            w.writerow(['Recording Type', recordingtype])
+            if rec.get() == "Post-Operation":
+                w.writerow(['Post-Operation Type', types.get()])
+                for i in range(1, len(dynamic_widgets)):
+                    if i % 2 != 0:
+                        w.writerow([dynamic_widgets[i]['text'],dynamic_widgets[i+1].get()])
+            elif rec.get() == 'Baseline' or rec.get() == 'Test':
+                for i in range(len(dynamic_widgets)):
+                    if i%2 == 0:
+                        w.writerow([dynamic_widgets[i]['text'], dynamic_widgets[i+1].get()])
+
+        if len(notesentry) > 0:
+            w.writerow(['Notes', notesentry])
+
+
+
+    
+csv_button = Button(root,height=4, width=13, text="Create CSV", font=csv_label_font, padx=-5, pady=-5, command=create_csv)
+csv_button.place(x=720, y=610)
+csv_label = Label(root, text="Make sure all necessary fields are entered before creating csv.", font=csv_label_font)
+csv_label.place(x=600, y=670)
+
  
 # Place Widgets
 
