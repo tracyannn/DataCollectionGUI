@@ -211,6 +211,11 @@ rec.set("Select Recording Type")
 dropdown_recType = OptionMenu(root, rec, "Baseline", "Post-Operation", "Test","Select Recording Type", command=rectype)
 dropdown_recType.place(x=30, y=430)
 
+#notes widget
+notes_label = Label(root, text="Notes (optional):", font=font_bold)
+notes_label.place(x=30, y=600)   
+notes_text = Text(root, width=25, height=5, font=font_normal)
+notes_text.place(x=35,y=630)
 
 #camera settings labels
 label_camera = Label(root, text = 'Camera Settings:', font = label_font)
@@ -376,12 +381,12 @@ label_recording_status.place(x = 695, y = 450)
 
 #progress bar
 
-label_progress = Label(root, text = "Recording Progress:", font = font_bold).place(x = 250, y = 600)
+label_progress = Label(root, text = "Recording Progress:", font = font_bold).place(x = 605, y = 510)
 progress = ttk.Progressbar(root, orient = HORIZONTAL, length = 400, mode= 'determinate')
-progress.place(x=120, y = 630)
+progress.place(x= 480, y = 550)
 
 label_progressbar_status = Label(root, text = "0% Complete", font = font_normal)
-label_progressbar_status.place(x=270, y = 660)
+label_progressbar_status.place(x=625, y = 575)
 
 def bar():
     rec_duration = duration_var.get() *60
@@ -433,9 +438,9 @@ def create_csv():
 
     
 csv_button = Button(root,height=4, width=13, text="Create CSV", font=csv_label_font, padx=-5, pady=-5, command=create_csv)
-csv_button.place(x=720, y=610)
+csv_button.place(x=625, y=640)
 csv_label = Label(root, text="Make sure all necessary fields are entered before creating csv.", font=csv_label_font)
-csv_label.place(x=600, y=670)
+csv_label.place(x=500, y=700)
 
  
 # Place Widgets
